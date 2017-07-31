@@ -17,6 +17,14 @@ export const persistNote = ({commit}, note) => {
     })
 }
 
+export const persistNewNote = ({commit}, note) => {
+  return axios.post(`http://localhost:9001/api/notes`, note)
+    .then((response) => {
+      commit('resetNewNote')
+      return response.data
+    })
+}
+
 export const fetchNotes = ({commit}) => {
   axios.get('http://localhost:9001/api/notes')
     .then((response) => {

@@ -14,6 +14,13 @@ export const setViewedNote = (state, note) => {
   state.note = note
 }
 
+export const resetNewNote = (state) => {
+  state.newNote = {
+    text: '',
+    title: 'New note'
+  }
+}
+
 export const addNote = (state, note) => {
   state.notes.push(note)
 }

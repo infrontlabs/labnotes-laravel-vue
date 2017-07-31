@@ -5,6 +5,7 @@ const defaultState = {
     text: ''
   },
   newNote: {
+    title: 'New note',
     text: ''
   },
   notes: [

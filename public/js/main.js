@@ -29422,6 +29422,7 @@ var defaultState = {
     text: ''
   },
   newNote: {
+    title: 'New note',
     text: ''
   },
   notes: [{
@@ -29470,7 +29471,7 @@ var note = exports.note = function note(state) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addNote = exports.setViewedNote = exports.setNotes = exports.setNote = undefined;
+exports.addNote = exports.resetNewNote = exports.setViewedNote = exports.setNotes = exports.setNote = undefined;
 
 var _findIndex2 = __webpack_require__(222);
 
@@ -29492,6 +29493,13 @@ var setViewedNote = exports.setViewedNote = function setViewedNote(state, note) 
   state.note = note;
 };
 
+var resetNewNote = exports.resetNewNote = function resetNewNote(state) {
+  state.newNote = {
+    text: '',
+    title: 'New note'
+  };
+};
+
 var addNote = exports.addNote = function addNote(state, note) {
   state.notes.push(note);
 };
@@ -29506,7 +29514,7 @@ var addNote = exports.addNote = function addNote(state, note) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchNote = exports.fetchNotes = exports.persistNote = exports.addNote = exports.updateNote = undefined;
+exports.fetchNote = exports.fetchNotes = exports.persistNewNote = exports.persistNote = exports.addNote = exports.updateNote = undefined;
 
 var _axios = __webpack_require__(9);
 
@@ -29539,16 +29547,25 @@ var persistNote = exports.persistNote = function persistNote(_ref3, note) {
   });
 };
 
-var fetchNotes = exports.fetchNotes = function fetchNotes(_ref4) {
+var persistNewNote = exports.persistNewNote = function persistNewNote(_ref4, note) {
   var commit = _ref4.commit;
+
+  return _axios2.default.post('http://localhost:9001/api/notes', note).then(function (response) {
+    commit('resetNewNote');
+    return response.data;
+  });
+};
+
+var fetchNotes = exports.fetchNotes = function fetchNotes(_ref5) {
+  var commit = _ref5.commit;
 
   _axios2.default.get('http://localhost:9001/api/notes').then(function (response) {
     commit('setNotes', response.data);
   });
 };
 
-var fetchNote = exports.fetchNote = function fetchNote(_ref5, id) {
-  var commit = _ref5.commit;
+var fetchNote = exports.fetchNote = function fetchNote(_ref6, id) {
+  var commit = _ref6.commit;
 
   _axios2.default.get('http://localhost:9001/api/notes/' + id).then(function (response) {
     commit('setViewedNote', response.data);
@@ -33402,27 +33419,34 @@ var _lodash = __webpack_require__(16);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _router = __webpack_require__(15);
+
+var _router2 = _interopRequireDefault(_router);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-  computed: _extends({}, (0, _vuex.mapGetters)(['note'])),
+  computed: _extends({}, (0, _vuex.mapGetters)({
+    note: 'getNewNote'
+  })),
   components: { Editor: _Editor2.default, Card: _Card2.default },
   watch: {
     // call again the method if the route changes
     '$route': 'fetchData'
   },
-  methods: _extends({}, (0, _vuex.mapActions)(['updateNote', 'addNote', 'fetchNote']), {
-    save: _lodash2.default.debounce(function (value) {
-      this.addNote({
-        id: null,
-        text: value
+  methods: _extends({}, (0, _vuex.mapActions)(['updateNote', 'persistNewNote', 'fetchNote']), {
+    save: _lodash2.default.debounce(function () {
+      var req = this.persistNewNote(this.note);
+      req.then(function (note) {
+        console.log(note.id);
+        _router2.default.push({ name: 'view', params: { id: note.id } });
       });
     }, 1000),
-    update: _lodash2.default.debounce(function (value) {
-      this.updateNote({
-        id: null,
-        text: value
-      });
+    updateText: _lodash2.default.debounce(function (value) {
+      this.note.text = value;
+    }, 300),
+    updateTitle: _lodash2.default.debounce(function (value) {
+      this.note.title = value;
     }, 300)
   })
 };
@@ -33615,12 +33639,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "EditCard"
   }, [_c('Editor', {
     attrs: {
-      "id": null,
-      "title": "New note",
-      "content": "// New note"
+      "id": "new",
+      "title": _vm.note.title,
+      "content": _vm.note.text
     },
     on: {
-      "change-content": _vm.update,
+      "change-note-text": _vm.updateText,
+      "change-note-title": _vm.updateTitle,
       "save-content": _vm.save
     }
   }), _vm._v(" "), _c('button', {

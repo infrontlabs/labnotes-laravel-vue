@@ -10,6 +10,15 @@ Route::get('/notes', function() {
   return App\Note::all();
 });
 
+
+Route::post('/notes', function() {
+  $note = new App\Note();
+  $note->title = request()->title;
+  $note->text = request()->text;
+  $note->save();
+  return $note;
+});
+
 Route::get('/notes/{note}', function(App\Note $note) {
   return $note;
 });
