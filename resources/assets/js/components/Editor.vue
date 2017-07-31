@@ -1,20 +1,20 @@
 <template>
   <div>
+    <input type="text" :value="title" class="Editor__TitleInput" />
     <div style="height: 500px;" class="Editor">
       <div :id="editorId" style="width: 100%; height: 100%;"></div>
     </div>
-    <button @click.prevent="save" class="btn btn-primary">Save</button>
-    <router-link to="/" class="btn btn-link">Cancel</router-link>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['editorId', 'content', 'lang', 'theme', 'height'],
+  props: ['id', 'title', 'content', 'lang', 'theme', 'height'],
   data () {
     return {
       editor: Object,
-      beforeContent: ''
+      beforeContent: '',
+      editorId: 'edit' + this.id
     }
   },
   methods: {
@@ -33,12 +33,14 @@ export default {
   	const lang = this.lang || 'markdown'
     const theme = this.theme || 'github'
 
-		this.editor = window.ace.edit(this.editorId)
+    this.editor = window.ace.edit(this.editorId)
+    this.editor.focus()
     this.editor.setValue(this.content, 1)
     this.editor.setOptions({
       showGutter: false,
       highlightActiveLine: false,
-      showPrintMargin: false
+      showPrintMargin: false,
+      fontSize: 16,
     })
 
     // mode-xxx.js or theme-xxx.jsがある場合のみ有効
@@ -55,10 +57,21 @@ export default {
 
 <style lang="sass">
 .Editor
-  background-color: #fff
-  box-shadow: 0 1px 1px rgba(0,0,0,.1)
-  padding: 15px
   margin-bottom: 10px
+  border-bottom: solid 1px #eee
+  color: #666
+
+.Editor__TitleInput
+  border: 0
+  font-size: 18px
+  font-weight: bold
+  width: 100%
+  border-bottom: solid 1px #eee
+  padding: 4px 8px
+  margin-bottom: 15px
+
+.ace_text
+  color: #666
 </style>
 
 

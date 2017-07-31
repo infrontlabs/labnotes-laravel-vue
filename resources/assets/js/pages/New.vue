@@ -1,23 +1,51 @@
 <template>
-  <div>
-    <Editor editor-id="new" :content="newNote.text" v-on:change-content="updateNote" v-on:save-content="addNote"></Editor>
-  </div>
+  <card class="EditCard">
+    <Editor
+      :id="null"
+      title="New note"
+      content="// New note"
+      v-on:change-content="update"
+      v-on:save-content="save">
+    </Editor>
+    <button @click.prevent="save" class="btn btn-primary">Save</button>
+    <router-link to="/" class="btn btn-link">Cancel</router-link>
+  </card>
+  </card>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Editor from '../components/Editor'
+import Card from  '../components/Card'
+import _ from 'lodash'
 export default {
   computed: {
-    ...mapGetters({
-      'newNote': 'getNewNote'
-    })
+    ...mapGetters(['note'])
+  },
+  components: {Editor, Card},
+  watch: {
+    // call again the method if the route changes
+    '$route': 'fetchData'
   },
   methods: {
-    ...mapActions(['updateNote', 'addNote'])
-  },
-  components: {
-    Editor
+    ...mapActions(['updateNote', 'addNote', 'fetchNote']),
+    save: _.debounce(function (value) {
+      this.addNote({
+        id: null,
+        text: value
+      })
+    }, 1000),
+    update: _.debounce(function (value) {
+      this.updateNote({
+        id: null,
+        text: value
+      })
+    }, 300)
   }
 }
 </script>
+
+<style lang="sass">
+.EditCard
+  padding: 15px
+</style>
