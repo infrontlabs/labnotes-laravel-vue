@@ -5,7 +5,8 @@
       :id="note.id"
       :title="note.title"
       :content="note.text"
-      v-on:change-content="update"
+      v-on:change-note-text="updateText"
+      v-on:change-note-title="updateTitle"
       v-on:save-content="save">
     </Editor>
     <button @click.prevent="save" class="btn btn-primary">Save</button>
@@ -19,6 +20,8 @@ import { mapActions, mapGetters } from 'vuex'
 import Editor from '../components/Editor'
 import Card from  '../components/Card'
 import _ from 'lodash'
+import router from '../router'
+
 export default {
   computed: {
     ...mapGetters(['note'])
@@ -36,20 +39,21 @@ export default {
   methods: {
     fetchData () {
       this.fetchNote(this.$route.params.id)
+      this.updateNote(this.note)
     },
-    ...mapActions(['updateNote', 'addNote', 'fetchNote']),
-    save: _.debounce(function (value) {
-      this.addNote({
-        id: null,
-        text: value
-      })
-    }, 1000),
-    update: _.debounce(function (value) {
-      this.updateNote({
-        id: null,
-        text: value
-      })
-    }, 300)
+    ...mapActions(['updateNote', 'persistNote', 'fetchNote']),
+    save: _.debounce(function () {
+      this.persistNote(this.note)
+      router.push({ name: 'view', params: { id: this.note.id }})
+    }, 300),
+    updateText (value) {
+      this.note.text = value
+      this.updateNote(this.note)
+    },
+    updateTitle (value) {
+      this.note.title = value
+      this.updateNote(this.note)
+    },
   }
 }
 </script>

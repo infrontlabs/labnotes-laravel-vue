@@ -45,4 +45,8 @@ export default {
 
 .ViewCard__Title
   margin-top: 0
+
+.ViewCard__Footer
+  border-top: solid 1px #eee
+  padding-top: 10px
 </style>

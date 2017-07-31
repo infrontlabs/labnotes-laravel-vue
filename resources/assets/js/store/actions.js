@@ -11,7 +11,10 @@ export const addNote = ({commit}, note) => {
 }
 
 export const persistNote = ({commit}, note) => {
-  console.log(note)
+  axios.post(`http://localhost:9001/api/notes/${note.id}`, note)
+    .then((response) => {
+      console.log(response)
+    })
 }
 
 export const fetchNotes = ({commit}) => {

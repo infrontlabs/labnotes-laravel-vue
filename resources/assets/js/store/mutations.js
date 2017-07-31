@@ -1,5 +1,9 @@
-export const setNote = (state, note) => {
-  state.newNote = note
+import _findIndex from 'lodash/findIndex'
+
+export const setNote = (state, payload) => {
+  let noteIndex = _findIndex(state.notes, {id: payload.id})
+  state.notes[noteIndex].text = payload.text
+  state.notes[noteIndex].title = payload.title
 }
 
 export const setNotes = (state, notes) => {

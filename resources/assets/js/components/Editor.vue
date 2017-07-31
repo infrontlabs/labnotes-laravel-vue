@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="text" :value="title" class="Editor__TitleInput" />
+    <input type="text" :value="title" class="Editor__TitleInput" @keyup="changeTitle" />
     <div style="height: 500px;" class="Editor">
       <div :id="editorId" style="width: 100%; height: 100%;"></div>
     </div>
@@ -20,6 +20,9 @@ export default {
   methods: {
     save () {
       this.$emit('save-content', this.content)
+    },
+    changeTitle (e) {
+      this.$emit('change-note-title', e.target.value)
     }
   },
   watch: {
@@ -49,7 +52,7 @@ export default {
 
     this.editor.on('change', () => {
     	this.beforeContent = this.editor.getValue()
-      this.$emit('change-content', this.editor.getValue())
+      this.$emit('change-note-text', this.editor.getValue())
     })
   }
 }
@@ -63,7 +66,7 @@ export default {
 
 .Editor__TitleInput
   border: 0
-  font-size: 18px
+  font-size: 1.5em
   font-weight: bold
   width: 100%
   border-bottom: solid 1px #eee

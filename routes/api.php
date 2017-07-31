@@ -10,6 +10,14 @@ Route::get('/notes', function() {
   return App\Note::all();
 });
 
-Route::get('/notes/{id}', function($id) {
-  return App\Note::findOrFail($id);
+Route::get('/notes/{note}', function(App\Note $note) {
+  return $note;
+});
+
+
+Route::post('/notes/{note}', function(App\Note $note) {
+  $note->title = request()->title;
+  $note->text = request()->text;
+  $note->save();
+  return $note;
 });
