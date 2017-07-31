@@ -55151,7 +55151,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.Sidebar {\n  height: 100vh;\n  width: 400px;\n  overflow: scroll;\n  position: relative;\n  margin-right: 15px;\n}\n.Sidebar__Header {\n  background-color: #ee7d22;\n  color: #fff;\n  position: fixed;\n  padding: 15px;\n  width: 400px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  z-index: 1;\n}\n.brand {\n  font-weight: 700;\n  font-size: 1.2em;\n}\n.Sidebar__Body {\n  padding: 75px 0 0;\n}\n", ""]);
+exports.push([module.i, "\n.Sidebar {\n  height: 100vh;\n  width: 400px;\n  overflow: scroll;\n  position: relative;\n  margin-right: 15px;\n}\n.Sidebar__Header {\n  background-color: #ee7d22;\n  color: #fff;\n  position: fixed;\n  padding: 15px;\n  width: 400px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  z-index: 1;\n}\n.Sidebar__HeaderButton .btn {\n  line-height: 1;\n  padding: 4px;\n}\n.brand {\n  font-weight: 700;\n  font-size: 1.2em;\n}\n.Sidebar__Body {\n  padding: 65px 0 0;\n}\n", ""]);
 
 // exports
 
@@ -55675,14 +55675,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "Sidebar__Header"
   }, [_c('div', {
     staticClass: "brand"
-  }, [_vm._v("\n      Lab Notes\n    ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n     </> Lab Notes\n    ")]), _vm._v(" "), _c('div', {
     staticClass: "Sidebar__HeaderButton"
   }, [_c('router-link', {
     staticClass: "btn btn-primary",
     attrs: {
       "to": "/new"
     }
-  }, [_vm._v("+")])], 1)]), _vm._v(" "), _c('div', {
+  }, [_c('i', {
+    staticClass: "glyphicon glyphicon-plus"
+  })])], 1)]), _vm._v(" "), _c('div', {
     staticClass: "Sidebar__Body"
   }, _vm._l((_vm.notes), function(note, index) {
     return _c('Note', {

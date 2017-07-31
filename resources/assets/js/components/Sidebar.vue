@@ -2,10 +2,10 @@
   <div class="Sidebar">
     <div class="Sidebar__Header">
       <div class="brand">
-        Lab Notes
+       </> Lab Notes
       </div>
       <div class="Sidebar__HeaderButton">
-        <router-link to="/new" class="btn btn-primary">+</router-link>
+        <router-link to="/new" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></router-link>
       </div>
     </div>
     <div class="Sidebar__Body">
@@ -59,13 +59,14 @@ export default {
   justify-content: space-between
   z-index: 1
 
-.Sidebar__HeaderButton
-
+.Sidebar__HeaderButton .btn
+  line-height: 1
+  padding: 4px
 
 .brand
   font-weight: 700
   font-size: 1.2em
 
 .Sidebar__Body
-  padding: 75px 0 0
+  padding: 65px 0 0
 </style>
