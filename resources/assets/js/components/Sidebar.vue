@@ -1,15 +1,20 @@
 <template>
   <div class="Sidebar">
     <div class="Sidebar__Header">
-      <div class="brand">
-       </> Lab Notes
+      <div class="Sidebar__HeaderRow">
+        <div class="brand">
+        </> Lab Notes
+        </div>
+        <div class="Sidebar__HeaderButton">
+          <router-link to="/new" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></router-link>
+        </div>
       </div>
-      <div class="Sidebar__HeaderButton">
-        <router-link to="/new" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></router-link>
+      <div class="Sidebar__HeaderRow">
+        <input type="text" class="form-control" placeholder="Search" v-model="query" />
       </div>
     </div>
     <div class="Sidebar__Body">
-      <Note :key="index" v-for="(note, index) in notes" :note="note" :render="false" />
+      <Note :key="index" v-for="(note, index) in filteredNotes()" :note="note" :render="false" />
     </div>
   </div>
 </template>
@@ -26,8 +31,19 @@ export default {
       'notes': 'notes'
     })
   },
+  data () {
+    return {
+      query: 'php'
+    }
+  },
   methods: {
-    ...mapActions(['updateNote', 'addNote', 'fetchNotes'])
+    ...mapActions(['updateNote', 'addNote', 'fetchNotes']),
+    filteredNotes() {
+      return this.notes.filter((note) => {
+        var re = new RegExp(this.query)
+        return (note.text.match(re)) || (note.title.match(re))
+      })
+    }
   },
   created() {
     this.fetchNotes()
@@ -54,10 +70,13 @@ export default {
   position: fixed
   padding: 15px
   width: 400px
+  z-index: 1
+
+.Sidebar__HeaderRow
   display: flex
   align-items: center
   justify-content: space-between
-  z-index: 1
+  width: 100%
 
 .Sidebar__HeaderButton .btn
   line-height: 1
@@ -68,5 +87,5 @@ export default {
   font-size: 1.2em
 
 .Sidebar__Body
-  padding: 65px 0 0
+  padding: 95px 0 0
 </style>

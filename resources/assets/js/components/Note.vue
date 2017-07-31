@@ -5,7 +5,7 @@
         <div
           :class="{ 'Note__delete': true,  'Note__delete--active': showDelete}"
           v-on:click="deleteNote(note.id)">
-          <i class="glyphicon glyphicon-trash"></i>
+          <i class="glyphicon glyphicon-remove"></i>
         </div>
         <div class="Card__title">{{note.title}}</div>
         <div class="Card__body">{{note.text}}</div>
@@ -52,13 +52,17 @@ export default {
   color: #ccc
 
 .Note__delete
-  background-color: #c00
   position: absolute
   padding: 5px 10px
   top: 0
   right: 0
-  color: #fff
+  color: #000
   display: none
+  transition: all 250ms ease
+
+  &:hover
+    color: #fff
+    background-color: #333
 
   &--active
     display: inline

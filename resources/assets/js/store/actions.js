@@ -1,6 +1,8 @@
 import axios from 'axios'
 import router from '../router'
 
+const BASE_API_URL = process.env.MIX_BASE_API_URL
+
 export const updateNote = ({commit, dispatch}, note) => {
   commit('setNote', note)
 }
@@ -11,14 +13,14 @@ export const addNote = ({commit}, note) => {
 }
 
 export const persistNote = ({commit, dispatch}, note) => {
-  axios.post(`http://localhost:9001/api/notes/${note.id}`, note)
+  axios.post(`${BASE_API_URL}/api/notes/${note.id}`, note)
     .then((response) => {
       dispatch('fetchNotes')
     })
 }
 
 export const persistNewNote = ({commit, dispatch}, note) => {
-  return axios.post(`http://localhost:9001/api/notes`, note)
+  return axios.post(`${BASE_API_URL}/api/notes`, note)
     .then((response) => {
       commit('resetNewNote')
       dispatch('fetchNotes')
@@ -27,14 +29,14 @@ export const persistNewNote = ({commit, dispatch}, note) => {
 }
 
 export const fetchNotes = ({commit}) => {
-  axios.get('http://localhost:9001/api/notes')
+  axios.get(`${BASE_API_URL}/api/notes`)
     .then((response) => {
       commit('setNotes', response.data)
     })
 }
 
 export const fetchNote = ({commit}, id) => {
-  axios.get(`http://localhost:9001/api/notes/${id}`)
+  axios.get(`${BASE_API_URL}/api/notes/${id}`)
     .then((response) => {
       commit('setViewedNote', response.data)
     })
@@ -42,5 +44,5 @@ export const fetchNote = ({commit}, id) => {
 
 export const deleteNote = ({commit, dispatch}, id) => {
   commit('removeNote', id)
-  axios.delete(`http://localhost:9001/api/notes/${id}`)
+  axios.delete(`${BASE_API_URL}/api/notes/${id}`)
 }

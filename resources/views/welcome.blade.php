@@ -7,11 +7,12 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Laravel/Vue Starter Kit</title>
         <link rel="stylesheet" href="/css/app.css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
     </head>
     <body>
         <div id="app">
-            <reviews />
         </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js"></script>
         <script src="/js/main.js"></script>
     </body>

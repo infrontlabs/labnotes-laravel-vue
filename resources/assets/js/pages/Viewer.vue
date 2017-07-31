@@ -19,11 +19,12 @@ import Card from  '../components/Card'
 import marked from 'marked'
 import moment from 'moment'
 import _ from 'lodash'
+
 export default {
   computed: {
     ...mapGetters(['note']),
     compiledMarkdown: function () {
-      return marked(this.note.text, { sanitize: true })
+      return marked(this.note.text)
     },
     formattedDate () {
       return moment(this.note.updated_at).format('MMMM Do YYYY, h:mm:ss a')
@@ -31,6 +32,19 @@ export default {
   },
   components: {Card},
   created () {
+    marked.setOptions({
+      gfm: true,
+      tables: true,
+      breaks: false,
+      pedantic: false,
+      sanitize: true,
+      smartLists: true,
+      smartypants: false,
+      highlight: function (code) {
+        console.log(code)
+        return require('highlight.js').highlightAuto(code).value;
+      }
+    })
     // fetch the data when the view is created and the data is
     // already being observed
     this.fetchData()
