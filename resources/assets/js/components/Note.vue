@@ -1,35 +1,68 @@
 <template>
+  <div v-on:mouseover="showDelete = true" v-on:mouseout="showDelete = false">
     <card>
       <router-link :to="{ name: 'view', params: { id: note.id }}" class="NoteLink">
-        <div v-if="render" v-html="compiledMarkdown"></div>
-        <div v-else>
-          <div class="Card__title">{{note.title}}</div>
-          <div class="Card__body">{{note.text}}</div>
+        <div
+          :class="{ 'Note__delete': true,  'Note__delete--active': showDelete}"
+          v-on:click="deleteNote(note.id)">
+          <i class="glyphicon glyphicon-trash"></i>
         </div>
+        <div class="Card__title">{{note.title}}</div>
+        <div class="Card__body">{{note.text}}</div>
+        <div class="Card__date">{{formattedDate}}</div>
       </router-link>
     </card>
+  </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import marked from 'marked'
 import router from '../router'
+import moment from 'moment'
 export default {
   props: ['note', 'render'],
+  data () {
+    return {
+      showDelete: false
+    }
+  },
   computed: {
     compiledMarkdown () {
       return marked(this.note.text, { sanitize: true })
+    },
+    formattedDate () {
+      return moment(this.note.updated_at).format('MMMM Do YYYY, h:mm:ss a')
     }
   },
   methods: {
-    link (id) {
-      router.push({ name: 'view', params: { id }})
-    }
+    ...mapActions(['deleteNote'])
   }
 }
 </script>
 
 <style lang="sass">
 @import '~sass/variables'
+
+.Card
+  position: relative
+
+.Card__date
+  font-size: .8em
+  color: #ccc
+
+.Note__delete
+  background-color: #c00
+  position: absolute
+  padding: 5px 10px
+  top: 0
+  right: 0
+  color: #fff
+  display: none
+
+  &--active
+    display: inline
+
 .NoteLink
   color: #333
   display: block

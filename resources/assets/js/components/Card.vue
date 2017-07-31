@@ -14,6 +14,7 @@ export default {
   box-shadow: 0 1px 1px rgba(0,0,0,.1)
   padding: 0
   margin-bottom: 5px
+  border-radius: 3px
 
   &__title
     overflow: hidden

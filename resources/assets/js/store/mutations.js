@@ -6,6 +6,11 @@ export const setNote = (state, payload) => {
   state.notes[noteIndex].title = payload.title
 }
 
+export const removeNote = (state, id) => {
+  let noteIndex = _findIndex(state.notes, {id})
+  state.notes.splice(noteIndex, 1)
+}
+
 export const setNotes = (state, notes) => {
   state.notes = notes
 }
