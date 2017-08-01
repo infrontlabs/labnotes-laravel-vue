@@ -18,13 +18,14 @@ import { mapActions, mapGetters } from 'vuex'
 import Card from  '../components/Card'
 import marked from 'marked'
 import moment from 'moment'
+import router from '../router'
 import _ from 'lodash'
 
 export default {
   computed: {
     ...mapGetters(['note']),
     compiledMarkdown: function () {
-      return marked(this.note.text)
+      return marked(this.note.text, {gfm: true})
     },
     formattedDate () {
       return moment(this.note.updated_at).format('MMMM Do YYYY, h:mm:ss a')
@@ -35,11 +36,10 @@ export default {
     marked.setOptions({
       gfm: true,
       tables: true,
-      breaks: false,
-      pedantic: false,
+      breaks: true,
       sanitize: true,
       smartLists: true,
-      smartypants: false,
+      smartypants: true,
       highlight: function (code) {
         console.log(code)
         return require('highlight.js').highlightAuto(code).value;
@@ -55,7 +55,10 @@ export default {
   },
   methods: {
     fetchData () {
-      this.fetchNote(this.$route.params.id)
+      var req = this.fetchNote(this.$route.params.id)
+      req.catch(() => {
+        router.push({name: 'Home'})
+      })
     },
     ...mapActions(['fetchNote'])
   }

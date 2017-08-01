@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="Sidebar__HeaderRow">
-        <input type="text" class="form-control" placeholder="Search" v-model="query" />
+        <input type="text" class="SearchInput" placeholder="Search" v-model="query" />
       </div>
     </div>
     <div class="Sidebar__Body">
@@ -33,14 +33,14 @@ export default {
   },
   data () {
     return {
-      query: 'php'
+      query: ''
     }
   },
   methods: {
     ...mapActions(['updateNote', 'addNote', 'fetchNotes']),
     filteredNotes() {
       return this.notes.filter((note) => {
-        var re = new RegExp(this.query)
+        var re = new RegExp(this.query, 'i')
         return (note.text.match(re)) || (note.title.match(re))
       })
     }
@@ -77,10 +77,17 @@ export default {
   align-items: center
   justify-content: space-between
   width: 100%
+  margin-bottom: 4px
 
 .Sidebar__HeaderButton .btn
   line-height: 1
   padding: 4px
+
+.SearchInput
+  width: 100%
+  color: #666
+  border: 0
+  padding: 4px 8px
 
 .brand
   font-weight: 700

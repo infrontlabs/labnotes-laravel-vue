@@ -36,7 +36,7 @@ export const fetchNotes = ({commit}) => {
 }
 
 export const fetchNote = ({commit}, id) => {
-  axios.get(`${BASE_API_URL}/api/notes/${id}`)
+  return axios.get(`${BASE_API_URL}/api/notes/${id}`)
     .then((response) => {
       commit('setViewedNote', response.data)
     })

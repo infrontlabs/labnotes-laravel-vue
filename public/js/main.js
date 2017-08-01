@@ -50377,7 +50377,7 @@ var fetchNotes = exports.fetchNotes = function fetchNotes(_ref5) {
 var fetchNote = exports.fetchNote = function fetchNote(_ref6, id) {
   var commit = _ref6.commit;
 
-  _axios2.default.get(BASE_API_URL + '/api/notes/' + id).then(function (response) {
+  return _axios2.default.get(BASE_API_URL + '/api/notes/' + id).then(function (response) {
     commit('setViewedNote', response.data);
   });
 };
@@ -54876,6 +54876,10 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
+var _router = __webpack_require__(11);
+
+var _router2 = _interopRequireDefault(_router);
+
 var _lodash = __webpack_require__(23);
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -54885,7 +54889,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
   computed: _extends({}, (0, _vuex.mapGetters)(['note']), {
     compiledMarkdown: function compiledMarkdown() {
-      return (0, _marked2.default)(this.note.text);
+      return (0, _marked2.default)(this.note.text, { gfm: true });
     },
     formattedDate: function formattedDate() {
       return (0, _moment2.default)(this.note.updated_at).format('MMMM Do YYYY, h:mm:ss a');
@@ -54896,11 +54900,10 @@ exports.default = {
     _marked2.default.setOptions({
       gfm: true,
       tables: true,
-      breaks: false,
-      pedantic: false,
+      breaks: true,
       sanitize: true,
       smartLists: true,
-      smartypants: false,
+      smartypants: true,
       highlight: function highlight(code) {
         console.log(code);
         return __webpack_require__(311).highlightAuto(code).value;
@@ -54917,7 +54920,10 @@ exports.default = {
   },
   methods: _extends({
     fetchData: function fetchData() {
-      this.fetchNote(this.$route.params.id);
+      var req = this.fetchNote(this.$route.params.id);
+      req.catch(function () {
+        _router2.default.push({ name: 'Home' });
+      });
     }
   }, (0, _vuex.mapActions)(['fetchNote']))
 };
@@ -72962,7 +72968,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.Sidebar {\n  height: 100vh;\n  width: 400px;\n  overflow: scroll;\n  position: relative;\n  margin-right: 15px;\n}\n.Sidebar__Header {\n  background-color: #ee7d22;\n  color: #fff;\n  position: fixed;\n  padding: 15px;\n  width: 400px;\n  z-index: 1;\n}\n.Sidebar__HeaderRow {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  width: 100%;\n}\n.Sidebar__HeaderButton .btn {\n  line-height: 1;\n  padding: 4px;\n}\n.brand {\n  font-weight: 700;\n  font-size: 1.2em;\n}\n.Sidebar__Body {\n  padding: 95px 0 0;\n}\n", ""]);
+exports.push([module.i, "\n.Sidebar {\n  height: 100vh;\n  width: 400px;\n  overflow: scroll;\n  position: relative;\n  margin-right: 15px;\n}\n.Sidebar__Header {\n  background-color: #ee7d22;\n  color: #fff;\n  position: fixed;\n  padding: 15px;\n  width: 400px;\n  z-index: 1;\n}\n.Sidebar__HeaderRow {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  width: 100%;\n  margin-bottom: 4px;\n}\n.Sidebar__HeaderButton .btn {\n  line-height: 1;\n  padding: 4px;\n}\n.SearchInput {\n  width: 100%;\n  color: #666;\n  border: 0;\n  padding: 4px 8px;\n}\n.brand {\n  font-weight: 700;\n  font-size: 1.2em;\n}\n.Sidebar__Body {\n  padding: 95px 0 0;\n}\n", ""]);
 
 // exports
 
@@ -73020,7 +73026,7 @@ exports.default = {
   })),
   data: function data() {
     return {
-      query: 'php'
+      query: ''
     };
   },
 
@@ -73029,7 +73035,7 @@ exports.default = {
       var _this = this;
 
       return this.notes.filter(function (note) {
-        var re = new RegExp(_this.query);
+        var re = new RegExp(_this.query, 'i');
         return note.text.match(re) || note.title.match(re);
       });
     }
@@ -73274,7 +73280,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.query),
       expression: "query"
     }],
-    staticClass: "form-control",
+    staticClass: "SearchInput",
     attrs: {
       "type": "text",
       "placeholder": "Search"
