@@ -14,5 +14,5 @@ mix.js('resources/assets/js/main.js', 'public/js')
 
 mix.browserSync({
   port: 9000,
-  proxy: 'snippets-vue.dev'
+  proxy: 'labnotes.app'
 })

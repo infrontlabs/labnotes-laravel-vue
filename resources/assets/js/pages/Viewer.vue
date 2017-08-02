@@ -1,5 +1,5 @@
 <template>
-  <card>
+  <card v-if="note.id">
     <div class="ViewCard">
       <div class="ViewCard__Date">
         {{formattedDate}}

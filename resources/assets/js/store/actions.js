@@ -13,14 +13,14 @@ export const addNote = ({commit}, note) => {
 }
 
 export const persistNote = ({commit, dispatch}, note) => {
-  axios.post(`${BASE_API_URL}/api/notes/${note.id}`, note)
+  axios.post(`${BASE_API_URL}/dev/notes/${note.id}`, note)
     .then((response) => {
       dispatch('fetchNotes')
     })
 }
 
 export const persistNewNote = ({commit, dispatch}, note) => {
-  return axios.post(`${BASE_API_URL}/api/notes`, note)
+  return axios.post(`${BASE_API_URL}/dev/notes`, note)
     .then((response) => {
       commit('resetNewNote')
       dispatch('fetchNotes')
@@ -29,14 +29,14 @@ export const persistNewNote = ({commit, dispatch}, note) => {
 }
 
 export const fetchNotes = ({commit}) => {
-  axios.get(`${BASE_API_URL}/api/notes`)
+  axios.get(`${BASE_API_URL}/dev/notes`)
     .then((response) => {
       commit('setNotes', response.data)
     })
 }
 
 export const fetchNote = ({commit}, id) => {
-  return axios.get(`${BASE_API_URL}/api/notes/${id}`)
+  return axios.get(`${BASE_API_URL}/dev/notes/${id}`)
     .then((response) => {
       commit('setViewedNote', response.data)
     })
@@ -44,5 +44,5 @@ export const fetchNote = ({commit}, id) => {
 
 export const deleteNote = ({commit, dispatch}, id) => {
   commit('removeNote', id)
-  axios.delete(`${BASE_API_URL}/api/notes/${id}`)
+  axios.delete(`${BASE_API_URL}/dev/notes/${id}`)
 }
