@@ -13,7 +13,7 @@ export const addNote = ({commit}, note) => {
 }
 
 export const persistNote = ({commit, dispatch}, note) => {
-  axios.post(`${BASE_API_URL}/dev/notes/${note.id}`, note)
+  axios.put(`${BASE_API_URL}/dev/notes/${note.id}`, note)
     .then((response) => {
       dispatch('fetchNotes')
     })

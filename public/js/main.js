@@ -50371,7 +50371,7 @@ var persistNote = exports.persistNote = function persistNote(_ref3, note) {
   var commit = _ref3.commit,
       dispatch = _ref3.dispatch;
 
-  _axios2.default.post(BASE_API_URL + '/dev/notes/' + note.id, note).then(function (response) {
+  _axios2.default.put(BASE_API_URL + '/dev/notes/' + note.id, note).then(function (response) {
     dispatch('fetchNotes');
   });
 };

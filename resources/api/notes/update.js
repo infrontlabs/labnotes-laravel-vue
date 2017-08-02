@@ -9,7 +9,7 @@ module.exports.handler = (event, context, callback) => {
   const data = JSON.parse(event.body)
 
   // validation
-  if (typeof data.text !== 'string' || typeof data.checked !== 'boolean') {
+  if (typeof data.text !== 'string' || typeof data.title !== 'string') {
     console.error('Validation Failed')
     callback(new Error('Couldn\'t update the todo item.'))
     return
