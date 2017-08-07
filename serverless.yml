@@ -5,8 +5,7 @@ provider:
   profile: infrontlabs
   stage: dev
   region: us-west-1
-  environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  environment: ${file(dotenv.js)}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -18,36 +17,38 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 functions:
+  auth:
+    handler: resources/api/notes/auth.handler
   create:
-    handler: notes/create.handler
+    handler: resources/api/notes/create.handler
     events:
       - http:
           path: notes
           method: post
           cors: true
   list:
-    handler: notes/list.handler
+    handler: resources/api/notes/list.handler
     events:
       - http:
           path: notes
           method: get
           cors: true
   get:
-    handler: notes/get.handler
+    handler: resources/api/notes/get.handler
     events:
       - http:
           path: notes/{id}
           method: get
           cors: true
   update:
-    handler: notes/update.handler
+    handler: resources/api/notes/update.handler
     events:
       - http:
           path: notes/{id}
           method: put
           cors: true
   delete:
-    handler: notes/delete.handler
+    handler: resources/api/notes/delete.handler
     events:
       - http:
           path: notes/{id}
@@ -72,3 +73,15 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
+    WebAppS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.s3Bucket}
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+
+package:
+  exclude:
+    - ./node_modules/**

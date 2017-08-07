@@ -7,7 +7,8 @@
     "watch-poll": "npm run watch -- --watch-poll",
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "s3deploy": "aws s3 sync public s3://labnotes.infrontlabs.com"
   },
   "devDependencies": {
     "axios": "^0.16.2",
@@ -20,7 +21,18 @@
     "laravel-mix": "^1.0",
     "lodash": "^4.17.4",
     "marked": "^0.3.6",
-    "vue": "^2.1.10"
+    "serverless-dotenv": "^1.0.0-beta.2",
+    "vue": "^2.1.10",
+    "auth0-js": "^8.8.0",
+    "browser-sync": "^2.18.12",
+    "browser-sync-webpack-plugin": "^1.2.0",
+    "highlight.js": "^9.12.0",
+    "jsonwebtoken": "^7.4.2",
+    "moment": "^2.18.1",
+    "serverless-client-s3": "^2.0.0",
+    "vue-router": "^2.7.0",
+    "vuex": "^2.3.1",
+    "dotenv-expand": "^4.0.1"
   },
   "babel": {
     "presets": [
@@ -34,14 +46,5 @@
       "ecmaVersion": 6,
       "sourceType": "module"
     }
-  },
-  "dependencies": {
-    "browser-sync": "^2.18.12",
-    "browser-sync-webpack-plugin": "^1.2.0",
-    "cross-env": "^5.0.1",
-    "highlight.js": "^9.12.0",
-    "moment": "^2.18.1",
-    "vue-router": "^2.7.0",
-    "vuex": "^2.3.1"
   }
 }
